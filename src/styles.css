@@ -1,16 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #eef3f8;
+  --color-bg: #edf3ff;
   --color-surface: #ffffff;
-  --color-fg: #0f2c45;
-  --color-muted: #64748b;
-  --color-subtle: #94a3b8;
-  --color-primary: #153a5a;
-  --color-primary-hover: #0f2c45;
-  --color-primary-soft: #eef3f8;
-  --color-primary-mid: #1c4a70;
-  --color-border: #e2e8f0;
+  --color-fg: #10243d;
+  --color-muted: #52657d;
+  --color-subtle: #7c8ea5;
+  --color-primary: #123d7a;
+  --color-primary-hover: #0c2f5f;
+  --color-primary-soft: #e0ebff;
+  --color-primary-mid: #1d4f94;
+  --color-border: #d7e2f1;
+  --color-gold: #d4af6a;
+  --color-gold-deep: #b88321;
   --color-warn: #d97706;
   --color-ok: #059669;
   --radius-sm: 0.5rem;
@@ -18,7 +20,7 @@
   --radius-lg: 1rem;
   --radius-xl: 1.25rem;
   --font-sans: "DM Sans", "Segoe UI", system-ui, sans-serif;
-  --shadow-card: 0 10px 30px -18px rgb(15 44 69 / 0.35);
+  --shadow-card: 0 14px 28px -18px rgb(18 61 122 / 0.28);
 }
 
 @layer base {
@@ -35,7 +37,7 @@
 
   body {
     margin: 0;
-    background: var(--color-bg);
+    background: linear-gradient(180deg, #eff5ff 0%, #eaf0fa 100%);
     color: var(--color-fg);
     font-family: var(--font-sans);
     line-height: 1.5;

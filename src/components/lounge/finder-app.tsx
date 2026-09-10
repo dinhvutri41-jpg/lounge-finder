@@ -122,12 +122,12 @@ function SearchForm({
   return (
     <div className="mx-auto max-w-xl px-4 py-10">
       <h1 className="text-center text-2xl font-semibold tracking-tight text-fg sm:text-3xl">
-        Tra cứu phòng chờ sân bay
+        Tra cứu thông tin phòng chờ toàn cầu
       </h1>
       <p className="mt-2 mb-8 text-center text-sm text-muted">
-        Chọn sân bay, ngày bay, giờ bay và terminal để tìm kiếm phòng chờ phù hợp
+        Chọn sân bay, ngày bay, giờ bay và terminal để tìm phòng chờ phù hợp nhất
       </p>
-      <div className="space-y-5 rounded-xl bg-surface p-5 shadow-card ring-1 ring-border sm:p-6">
+      <div className="space-y-6 rounded-2xl bg-surface p-6 shadow-card ring-1 ring-border sm:p-7">
         <div>
           <label className="mb-1.5 block text-sm font-medium text-muted">Sân bay</label>
           {selected ? (
@@ -196,10 +196,7 @@ function SearchForm({
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-muted">
-              Ngày bay
-              <span className="block font-normal text-subtle">(để trống = không lọc theo ngày)</span>
-            </label>
+            <label className="mb-1.5 block text-sm font-medium text-muted">Ngày bay</label>
             <DatePicker
               value={date}
               open={picker === "date"}
@@ -209,10 +206,7 @@ function SearchForm({
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-muted">
-              Giờ bay
-              <span className="block font-normal text-subtle">(để trống = không lọc theo giờ)</span>
-            </label>
+            <label className="mb-1.5 block text-sm font-medium text-muted">Giờ bay</label>
             <TimePicker
               value={time}
               open={picker === "time"}
@@ -240,7 +234,7 @@ function SearchForm({
           />
         </div>
         <Button
-          className="w-full"
+          className="w-full bg-[linear-gradient(135deg,#1d4f94_0%,#123d7a_45%,#0c2f5f_100%)] text-white shadow-sm hover:brightness-110"
           disabled={!code}
           onClick={() =>
             onSearch({
@@ -714,28 +708,50 @@ export function FinderApp() {
   const seeding = (meta.isLoading || meta.isFetching) && !meta.data;
 
   return (
-    <div className="min-h-screen bg-bg text-fg">
+    <div
+      className="relative min-h-screen overflow-hidden text-fg"
+      style={{
+        backgroundImage: "url('/background.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div className="pointer-events-none absolute -top-20 right-[-10%] h-80 w-80 rounded-full bg-white/20 blur-3xl" />
+      <div className="pointer-events-none absolute right-10 top-20 h-52 w-52 rounded-full bg-sky-200/30 blur-3xl" />
       {seeding && (
         <div className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-bg">
           <div className="size-10 animate-spin rounded-full border-2 border-border border-t-primary" />
           <p className="mt-4 text-sm text-muted">Đang tải dữ liệu…</p>
         </div>
       )}
-      <header className="relative z-10 border-b border-border bg-surface">
-        <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3">
-          <button
-            type="button"
-            className="font-semibold text-fg"
-            onClick={() => {
-              setCriteria(null);
-              setOpenId(null);
-            }}
-          >
-            Lounge Finder
-          </button>
+      <header className="relative z-10 border-b border-primary/10 bg-[linear-gradient(90deg,#123d7a_0%,#1d4f94_100%)] text-white shadow-[0_12px_30px_-18px_rgba(18,61,122,0.65)]">
+        <div className="mx-auto flex max-w-3xl items-center justify-between gap-0 px-4 py-3">
+          <div className="flex items-center gap-0">
+            <button
+              type="button"
+              className="flex items-center justify-center p-0"
+              onClick={() => {
+                setCriteria(null);
+                setOpenId(null);
+              }}
+              aria-label="Lounge Finder"
+            >
+              <img
+                src="/linkcare-logo.png?v=20260910"
+                alt="LinkCare logo"
+                className="h-10 w-auto object-contain"
+              />
+            </button>
+            <img
+              src="/winner.png"
+              alt="Winner"
+              className="h-14 w-auto object-contain"
+            />
+          </div>
           <div className="flex min-w-0 items-center gap-2">
             {(meta.data?.lastTickAt || meta.data?.exportedAt) && (
-              <span className="hidden truncate text-xs text-subtle sm:inline">
+              <span className="hidden truncate text-xs text-white/80 sm:inline">
                 LoungeKey: {formatStamp(meta.data.lastTickAt || meta.data.exportedAt)}
                 {meta.data.loungeCount ? ` · ${meta.data.loungeCount} phòng chờ` : ""}
               </span>
@@ -745,9 +761,9 @@ export function FinderApp() {
               title="Đồng bộ LoungeKey"
               disabled={sync.isPending}
               onClick={() => sync.mutate()}
-              className="rounded-full p-2 text-primary-mid hover:bg-primary-soft disabled:opacity-50"
+              className="rounded-full p-2.5 text-white/90 hover:bg-white/10 disabled:opacity-50"
             >
-              <RefreshCw className={cn("size-4", sync.isPending && "animate-spin")} />
+              <RefreshCw className={cn("size-5", sync.isPending && "animate-spin")} />
             </button>
           </div>
         </div>
