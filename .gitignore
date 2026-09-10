@@ -1,0 +1,15 @@
+node_modules
+.vercel
+.tanstack
+.output
+dist
+.env
+.env.local
+.env*.local
+*.log
+.DS_Store
+screenshots
+artifacts
+pglite-data
+*.tsbuildinfo
+.grok/local
