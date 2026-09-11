@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoReportRouteImport } from './routes/demo-report'
+import { Route as HomeRouteImport } from './routes/home'
+import { Route as ApiAuthRouteImport } from './routes/api/auth'
 import { Route as ApiSyncRouteImport } from './routes/api/sync'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +25,16 @@ const DemoReportRoute = DemoReportRouteImport.update({
   path: '/demo-report',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthRoute = ApiAuthRouteImport.update({
+  id: '/api/auth',
+  path: '/api/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSyncRoute = ApiSyncRouteImport.update({
   id: '/api/sync',
   path: '/api/sync',
@@ -32,30 +44,38 @@ const ApiSyncRoute = ApiSyncRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/demo-report': typeof DemoReportRoute
+  '/home': typeof HomeRoute
+  '/api/auth': typeof ApiAuthRoute
   '/api/sync': typeof ApiSyncRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/demo-report': typeof DemoReportRoute
+  '/home': typeof HomeRoute
+  '/api/auth': typeof ApiAuthRoute
   '/api/sync': typeof ApiSyncRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/demo-report': typeof DemoReportRoute
+  '/home': typeof HomeRoute
+  '/api/auth': typeof ApiAuthRoute
   '/api/sync': typeof ApiSyncRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo-report' | '/api/sync'
+  fullPaths: '/' | '/demo-report' | '/home' | '/api/auth' | '/api/sync'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo-report' | '/api/sync'
-  id: '__root__' | '/' | '/demo-report' | '/api/sync'
+  to: '/' | '/demo-report' | '/home' | '/api/auth' | '/api/sync'
+  id: '__root__' | '/' | '/demo-report' | '/home' | '/api/auth' | '/api/sync'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DemoReportRoute: typeof DemoReportRoute
+  HomeRoute: typeof HomeRoute
+  ApiAuthRoute: typeof ApiAuthRoute
   ApiSyncRoute: typeof ApiSyncRoute
 }
 
@@ -75,6 +95,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoReportRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth': {
+      id: '/api/auth'
+      path: '/api/auth'
+      fullPath: '/api/auth'
+      preLoaderRoute: typeof ApiAuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/sync': {
       id: '/api/sync'
       path: '/api/sync'
@@ -88,6 +122,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DemoReportRoute: DemoReportRoute,
+  HomeRoute: HomeRoute,
+  ApiAuthRoute: ApiAuthRoute,
   ApiSyncRoute: ApiSyncRoute,
 }
 export const routeTree = rootRouteImport

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
   ArrowUpRight,
   Bell,
@@ -26,6 +26,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { getComplaintReport } from "@/lib/complaints.functions";
 import { getReportData } from "@/lib/lounges.functions";
+import { useIdleLogout } from "@/lib/use-idle-logout";
 
 const navSections = [
   {
@@ -40,6 +41,9 @@ const navSections = [
 ];
 
 function DemoReportPage() {
+  const navigate = useNavigate();
+  const [checkingSession, setCheckingSession] = useState(true);
+  useIdleLogout();
   const [countryFilter, setCountryFilter] = useState("all");
   const [airportFilter, setAirportFilter] = useState("all");
   const [complaintFromMonth, setComplaintFromMonth] = useState("all");
@@ -50,8 +54,19 @@ function DemoReportPage() {
   const [complaintPage, setComplaintPage] = useState(1);
   const [activeView, setActiveView] = useState("overview");
 
+  useEffect(() => {
+    fetch("/api/auth")
+      .then((response) => response.json())
+      .then((session: { authenticated: boolean }) => {
+        if (!session.authenticated) navigate({ to: "/" });
+      })
+      .catch(() => navigate({ to: "/" }))
+      .finally(() => setCheckingSession(false));
+  }, [navigate]);
+
   const reportQ = useQuery({
     queryKey: ["demo-report", countryFilter, airportFilter],
+    enabled: !checkingSession,
     queryFn: () =>
       getReportData({
         data: {
@@ -74,6 +89,7 @@ function DemoReportPage() {
       complaintProject,
       complaintProvider,
     ],
+    enabled: !checkingSession,
     queryFn: () =>
       getComplaintReport({
         data: {
@@ -118,7 +134,7 @@ function DemoReportPage() {
       ].some((value) => value.toLocaleLowerCase().includes(needle)),
     );
   }, [complaintData, complaintSearch]);
-  const complaintPageSize = 20;
+  const complaintPageSize = 10;
   const complaintPageCount = Math.max(1, Math.ceil(filteredComplaintRecords.length / complaintPageSize));
   const complaintPageIndex = Math.min(complaintPage, complaintPageCount);
   const visibleComplaintRecords = filteredComplaintRecords.slice(
@@ -156,6 +172,10 @@ function DemoReportPage() {
     ],
     [data],
   );
+
+  if (checkingSession) {
+    return <div className="flex min-h-screen items-center justify-center bg-bg text-primary">Đang kiểm tra đăng nhập...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(96,165,250,0.18),_transparent_35%),linear-gradient(180deg,_#edf3ff_0%,_#eaf2ff_100%)] text-slate-800">
