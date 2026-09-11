@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DemoReportRouteImport } from './routes/demo-report'
 import { Route as ApiSyncRouteImport } from './routes/api/sync'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoReportRoute = DemoReportRouteImport.update({
+  id: '/demo-report',
+  path: '/demo-report',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiSyncRoute = ApiSyncRouteImport.update({
@@ -25,27 +31,31 @@ const ApiSyncRoute = ApiSyncRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/demo-report': typeof DemoReportRoute
   '/api/sync': typeof ApiSyncRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/demo-report': typeof DemoReportRoute
   '/api/sync': typeof ApiSyncRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/demo-report': typeof DemoReportRoute
   '/api/sync': typeof ApiSyncRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/sync'
+  fullPaths: '/' | '/demo-report' | '/api/sync'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/sync'
-  id: '__root__' | '/' | '/api/sync'
+  to: '/' | '/demo-report' | '/api/sync'
+  id: '__root__' | '/' | '/demo-report' | '/api/sync'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DemoReportRoute: typeof DemoReportRoute
   ApiSyncRoute: typeof ApiSyncRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo-report': {
+      id: '/demo-report'
+      path: '/demo-report'
+      fullPath: '/demo-report'
+      preLoaderRoute: typeof DemoReportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/sync': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DemoReportRoute: DemoReportRoute,
   ApiSyncRoute: ApiSyncRoute,
 }
 export const routeTree = rootRouteImport
